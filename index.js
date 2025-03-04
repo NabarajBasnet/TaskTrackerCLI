@@ -1,5 +1,5 @@
 const fs = require('fs');
-
+const readline = require('readline');
 
 // // Commands a user should give
 // // list tasks = This command will show all tasks in file
@@ -22,7 +22,7 @@ const fs = require('fs');
 // const mark_done = process.argv[2].toString() === 'mark-done' ? 'mark-done' : '';
 
 // // Add new task command
-// const add_new_task = process.argv[2].toString() === 'add' && process.argv[3].toString() ? 'add-new-task' : 'Please add some task';
+const add_new_task = process.argv[2].toString() === 'add' && process.argv[3].toString() ? 'add-new-task' : 'Please add some task';
 
 // // Update task and delete task
 // const update_task = process.argv[2].toString() === 'update' && process.argv[3].toString() && process.argv[4].toString() ? 'update-task' : 'Update task command invalid';
@@ -61,14 +61,31 @@ showTasks();
 
 
 // Add new task function
-const addNewTask = (newData) => {
+const addNewTask = () => {
+
     try {
         fs.readFile('./taskdb.json', (err, data) => {
             let tasks = [];
 
+            let task = {
+                id: '',
+                description: '',
+                status: null,
+                createdAt: '',
+                updatedAt: '',
+            };
+
             if (err && !data) {
                 console.log('Error: ', err.stack);
                 throw new Error(err);
+            };
+
+            if (add_new_task) {
+                task.id = Date.now().toString();
+                task.description = process.argv[3];
+                task.status = false;
+                task.createdAt = new Date();
+                task.updatedAt = new Date();
             };
 
             if (!Array.isArray(JSON.parse(data))) {
@@ -81,18 +98,20 @@ const addNewTask = (newData) => {
                 });
             };
 
-            tasks.push(...JSON.parse(data), newData);
+            tasks.push(...JSON.parse(data), task);
             fs.writeFile('./taskdb.json', JSON.stringify(tasks), (err) => {
                 if (err) {
                     console.log('Err: ', err.stack);
                     throw new Error(err);
                 };
             });
-            console.log(`${tasks} saved!`);
+            console.log(`${task} task added!`);
         });
+
+
     } catch (err) {
         console.log(err);
     };
 };
 
-addNewTask({ 'DB': "SQL" });
+addNewTask();
