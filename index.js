@@ -285,3 +285,27 @@ const listInProgressTasks = () => {
 };
 
 listInProgressTasks();
+
+
+// List status with todo
+const listStatusWithTodo = () => {
+    try {
+        fs.readFile('./taskdb.json', (err, data) => {
+            let tasks = JSON.parse(data);
+            if (!data && err) {
+                console.log('Error: ', err.stack);
+            };
+            if (process.argv[2] === 'list' && process.argv[3] === 'todo') {
+                const todoTasks = tasks.filter(task => task.status === 'todo');
+                if (!todoTasks) {
+                    console.log('No tasks with that status');
+                }
+                console.log('In Progress Tasks: ', todoTasks);
+            };
+        });
+    } catch (err) {
+        console.log(err);
+    };
+}
+
+listStatusWithTodo();
