@@ -203,4 +203,33 @@ const markInprogress = () => {
     };
 };
 
-markInprogress();
+// markInprogress();
+
+
+const markDone = () => {
+    try {
+        fs.readFile('./taskdb.json', (err, data) => {
+            let tasks = JSON.parse(data);
+            if (err && !data) {
+                console.log('Error: ', err.stack);
+            };
+
+            if (process.argv[2] === 'mark-done' && process.argv[3]) {
+                const selectedTaskUpdate = tasks[process.argv[3]]
+                selectedTaskUpdate.status = 'done';
+                tasks[process.argv[3]] = selectedTaskUpdate;
+                fs.writeFile('./taskdb.json', JSON.stringify(tasks), (err) => {
+                    if (err) {
+                        console.log(err);
+                    };
+                    console.log('Marked done');
+                });
+            };
+        });
+    } catch (err) {
+        console.log(err);
+        throw new Error(err);
+    };
+};
+
+markDone();
