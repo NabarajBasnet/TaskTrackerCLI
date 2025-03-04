@@ -121,10 +121,19 @@ const updateTask = () => {
         fs.readFile('./taskdb.json', (err, data) => {
             let tasks = JSON.parse(data);
 
-            if (!err && data) {
-                tasks.push(JSON.parse(data));
+            if (err && !data) {
+                console.log(err.stack);
             };
-            console.log('Task one: ', tasks[1]);
+            if (process.argv[2] === 'update' && process.argv[3] && process.argv[4]) {
+                tasks[process.argv[3]].description = process.argv[4];
+                fs.writeFile('./taskdb.json', JSON.stringify(tasks), (err) => {
+                    if (err) {
+                        console.log('Err: ', err.stack);
+                        throw new Error(err);
+                    };
+                });
+                console.log(tasks[process.argv[3]], 'description updated!');
+            };
         });
     } catch (err) {
         console.log('Err: ', err);
