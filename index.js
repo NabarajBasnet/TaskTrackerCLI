@@ -244,8 +244,7 @@ const listStatusWithTodo = () => {
     } catch (err) {
         console.log(err);
     };
-}
-
+};
 
 const mainFunction = () => {
     const command = process.argv[2]?.trim();
