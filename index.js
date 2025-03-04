@@ -21,7 +21,7 @@ const fs = require('fs');
 // const mark_done = process.argv[2].toString() === 'mark-done' ? 'mark-done' : '';
 
 // // Add new task command
-// const add_new_task = process.argv[2].toString() === 'add' && process.argv[3].toString() ? 'add-new-task' : 'Please add some task';
+const add_new_task = process.argv[2].toString() === 'add' && process.argv[3].toString() ? 'add-new-task' : 'Please add some task';
 
 // // Update task and delete task
 // const update_task = process.argv[2].toString() === 'update' && process.argv[3].toString() && process.argv[4].toString() ? 'update-task' : 'Update task command invalid';
@@ -113,7 +113,7 @@ const addNewTask = () => {
     };
 };
 
-addNewTask();
+// addNewTask();
 
 // Updating and deleting tasks
 const updateTask = () => {
@@ -141,7 +141,7 @@ const updateTask = () => {
     };
 };
 
-updateTask();
+// updateTask();
 
 
 const deleteTask = () => {
@@ -170,7 +170,7 @@ const deleteTask = () => {
     };
 };
 
-deleteTask();
+// deleteTask();
 
 
 // # Marking a task as in progress or done
@@ -179,9 +179,28 @@ deleteTask();
 
 const markInprogress = () => {
     try {
+        fs.readFile('./taskdb.json', (err, data) => {
+            let tasks = JSON.parse(data);
+            if (err && !data) {
+                console.log('Error: ', err.stack);
+            };
 
+            if (process.argv[2] === 'mark-in-progress' && process.argv[3]) {
+                const selectedTaskUpdate = tasks[process.argv[3]]
+                selectedTaskUpdate.status = 'in-progress';
+                tasks[process.argv[3]] = selectedTaskUpdate;
+                fs.writeFile('./taskdb.json', JSON.stringify(tasks), (err) => {
+                    if (err) {
+                        console.log(err);
+                    };
+                    console.log('Marked in progress');
+                });
+            };
+        });
     } catch (err) {
         console.log(err);
         throw new Error(err);
     };
 };
+
+markInprogress();
