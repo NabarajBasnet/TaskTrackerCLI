@@ -251,6 +251,9 @@ const listDoneTasks = () => {
             };
             if (process.argv[2] === 'list' && process.argv[3] === 'done') {
                 const doneTasks = tasks.filter(task => task.status === 'done');
+                if (!doneTasks) {
+                    console.log('No tasks with that status');
+                };
                 console.log('Done tasks: ', doneTasks);
             };
         });
@@ -259,4 +262,26 @@ const listDoneTasks = () => {
     };
 };
 
-listDoneTasks();
+// listDoneTasks();
+
+const listInProgressTasks = () => {
+    try {
+        fs.readFile('./taskdb.json', (err, data) => {
+            let tasks = JSON.parse(data);
+            if (!data && err) {
+                console.log('Error: ', err.stack);
+            };
+            if (process.argv[2] === 'list' && process.argv[3] === 'in-progress') {
+                const inProgressTasks = tasks.filter(task => task.status === 'in-progress');
+                if (!inProgressTasks) {
+                    console.log('No tasks with that status');
+                }
+                console.log('In Progress Tasks: ', inProgressTasks);
+            };
+        });
+    } catch (err) {
+        console.log(err);
+    };
+};
+
+listInProgressTasks();
