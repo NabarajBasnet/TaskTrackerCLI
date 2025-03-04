@@ -82,7 +82,7 @@ const addNewTask = () => {
             if (add_new_task) {
                 task.id = Date.now().toString();
                 task.description = process.argv[3];
-                task.status = false;
+                task.status = 'todo';
                 task.createdAt = new Date();
                 task.updatedAt = new Date();
             };
@@ -232,4 +232,31 @@ const markDone = () => {
     };
 };
 
-markDone();
+// markDone();
+
+
+// Listing tasks by status
+// task-cli list done
+// task-cli list todo
+// task-cli list in-progress
+
+// List done tasks
+
+const listDoneTasks = () => {
+    try {
+        fs.readFile('./taskdb.json', (err, data) => {
+            let tasks = JSON.parse(data);
+            if (!data && err) {
+                console.log('Error: ', err.stack);
+            };
+            if (process.argv[2] === 'list' && process.argv[3] === 'done') {
+                const doneTasks = tasks.filter(task => task.status === 'done');
+                console.log('Done tasks: ', doneTasks);
+            };
+        });
+    } catch (err) {
+        console.log(err);
+    };
+};
+
+listDoneTasks();
