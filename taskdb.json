@@ -12,19 +12,5 @@
         "status": false,
         "createdAt": "2025-03-04T11:18:26.957Z",
         "updatedAt": "2025-03-04T11:18:26.957Z"
-    },
-    {
-        "id": "1741087140305",
-        "description": "Master Backend Development And Create Projects",
-        "status": false,
-        "createdAt": "2025-03-04T11:19:00.305Z",
-        "updatedAt": "2025-03-04T11:19:00.305Z"
-    },
-    {
-        "id": "1741087174395",
-        "description": "Lean Express JS",
-        "status": false,
-        "createdAt": "2025-03-04T11:19:34.395Z",
-        "updatedAt": "2025-03-04T11:19:34.395Z"
     }
 ]

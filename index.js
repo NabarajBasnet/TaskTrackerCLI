@@ -1,5 +1,4 @@
 const fs = require('fs');
-const readline = require('readline');
 
 // // Commands a user should give
 // // list tasks = This command will show all tasks in file
@@ -114,6 +113,7 @@ const addNewTask = () => {
     };
 };
 
+addNewTask();
 
 // Updating and deleting tasks
 const updateTask = () => {
@@ -146,8 +146,42 @@ updateTask();
 
 const deleteTask = () => {
     try {
+        fs.readFile('./taskdb.json', (err, data) => {
+            let tasks = JSON.parse(data);
 
+            if (err && !data) {
+                console.log(err.stack);
+            };
+
+            if (process.argv[2] === 'delete' && process.argv[3]) {
+                const selectedTaskId = tasks[process.argv[3]].id;
+                if (!selectedTaskId) {
+                    console.log('Task in not available in the index');
+                };
+                const filtered_tasks = tasks.filter(task => task.id !== selectedTaskId)
+                fs.writeFile('./taskdb.json', JSON.stringify(filtered_tasks), (err) => {
+                    if (err) { console.log(err.stack); }
+                    console.log('Task deleted');
+                });
+            };
+        });
     } catch (err) {
         console.log('Err: ', err);
+    };
+};
+
+deleteTask();
+
+
+// # Marking a task as in progress or done
+// task-cli mark-in-progress 1
+// task-cli mark-done 1
+
+const markInprogress = () => {
+    try {
+
+    } catch (err) {
+        console.log(err);
+        throw new Error(err);
     };
 };
